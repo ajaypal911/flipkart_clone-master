@@ -11,7 +11,8 @@ import SignInSide from "./SignIn";
 import "tippy.js/themes/light.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {resetFlag, setBeforeLogout} from "../actions/index"
+import {resetFlag, setBeforeLogout,printUser, resetCart} from "../actions/index"
+import { Calculate } from "@mui/icons-material";
 
 function Header() {
   // const { DispatchUserEvent } = useContext(AppContext);
@@ -20,6 +21,13 @@ function Header() {
   const Cart = useSelector((state) => state.Cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const calculateTotalItems = () => {
+    let c = 0;
+    for (let i = 0; i < Cart?.items?.length; i++) {
+      c += Cart.items[i].quantity;
+    }
+    return c;
+  };
   return (
     <div className="header">
       <div className="header_first">
@@ -69,7 +77,9 @@ function Header() {
               className="tp"
               onClick={() => {
                 dispatch(resetFlag());
-                dispatch(setBeforeLogout({ id:loggedUser.id ,Cart:Cart}))
+                dispatch(setBeforeLogout({ id: loggedUser.id, Cart: Cart }));
+                dispatch(printUser());
+                dispatch(resetCart());
               }}
             >
               Logout
@@ -99,12 +109,14 @@ function Header() {
         </Tippy>
         <ExpandMoreIcon />
       </div>
-      <div className="header_fifth" onClick={() => {
-        navigate("CartItems");
-      }}>
+      <div
+        className="header_fifth"
+        onClick={() => {
+          navigate("CartItems");
+        }}
+      >
         <ShoppingCartIcon />
-        <p>Cart {" "} {Cart.items.length}</p>
-        
+        <p>Cart {calculateTotalItems() == 0 ? " " : calculateTotalItems()}</p>
       </div>
     </div>
   );

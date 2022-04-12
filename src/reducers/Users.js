@@ -16,16 +16,22 @@ const Users = (state = { ...initialstate }, action) => {
         loginData: [...state?.loginData, action.payload],
       };
     case "SET_BEFORE_LOGOUT":
-      let data = state.loginData;
-      let idx = data.map((u, i) => {
+      let data = [...state.loginData];
+      let idx = -1;
+      data.find((u, indx) => {
         if (u.id === action.payload.id) {
-          return i;
+          console.log("indx", indx);
+          idx = indx;
+          return indx;
         }
       });
       data[idx] = { ...data[idx], Cart: action.payload.Cart };
-      return { ...state, loginData: data };
+      return { loginData: data };
+    case "PRINT_STATE":
+      console.log("users state", state);
+      return state;
     default:
-      return state ;
+      return state;
   }
   console.log("state in users after switch", state);
 };

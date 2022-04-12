@@ -1,18 +1,31 @@
 import data from "../data/products";
 import React from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setViewProduct } from "../actions/index"
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import { Navigate, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 function Products() {
+  const items = useSelector((state) => state.Cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const checkProduct = (id) => {
+    let res = items?.find((i) => {
+      if (i.id === id) {
+        return true;
+        }
+    })
+    if (res) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return (
     <div className="container" style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}>
       {data.map((elem) => {
         return (
-          <div className=" col-lg-2 col-md-3 col-sm-6 my-2 px-3" style={{ display: "flex", flexWrap: "wrap" }}
+          <div className="border col-lg-2 col-md-3 col-sm-6 my-2 px-3" style={{ display: "flex", flexWrap: "wrap" }}
              >
             <center>
               <img
@@ -29,20 +42,12 @@ function Products() {
                   margin: "auto",
                 }}
                 onClick={() => {
-                  navigate("ViewProduct");
+                  navigate(`ViewProduct/${elem.id}`);
               dispatch(setViewProduct(elem));
               console.log("div clicked");
             }}
               />
-              <button
-                className="btn btn-success btn-sm"
-                style={{ width: "120px" }}
-                onClick={() => {
-                  dispatch(addToCart(elem));
-                }}
-              >
-                <ShoppingCartCheckoutIcon /> Add to Cart
-              </button>
+          
             </center>
             <div style={{ fontSize: "14px" }}>Category - {elem.category.toUpperCase()}</div>
             <div style={{ fontSize: "14px" }}>Price - ${elem.price} </div>

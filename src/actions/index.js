@@ -28,6 +28,12 @@ export const removeFromCart = (newItem) => {
     payload: newItem,
   };
 };
+export const resetCart = () => {
+  console.log("resetCart in action");
+  return {
+    type: "RESET_CART",
+  }
+}
 export const increaseQuantity = (newItem) => {
   return {
     type: "INCREASE_QUANTITY",
@@ -55,12 +61,20 @@ export const AddUser = (user) => {
   };
 };
 export const setBeforeLogout= (data) => {
-  // console.log(user, "check datata acacacaca");
+   console.log("setBeforeLogout in action");
   return {
     type: "SET_BEFORE_LOGOUT",
     payload: data
   };
 };
+export const setCartBeforeLogin= (data) => {
+   console.log("setBeforeLogin in action");
+  return {
+    type: "SET_CART",
+    payload: data
+  };
+};
+
 export const setFlag = (data) => {
   return {
     type: "SETFLAG",
@@ -86,4 +100,32 @@ export const setViewProduct = (data) => {
     payload: data,
   };
 };
+export const printUser = () => {
+  return {
+    type: "PRINT_STATE",
+    // payload: data,
+  };
+};
 
+export const addProduct = (data) => {
+  console.log("in addproduct action");
+  return {
+    type: "ADD_PRODUCT",
+    payload: data,
+  };
+};
+
+export const deleteProduct = (data) => {
+  console.log("in deleteproduct action");
+  return {
+    type: "DELETE_PRODUCT",
+    payload: data,
+  };
+};
+export const saveAfterEditProduct = (data) => {
+  console.log("in saveAfterEditproduct action");
+  return {
+    type: "SAVE_PRODUCT",
+    payload: data,
+  };
+};

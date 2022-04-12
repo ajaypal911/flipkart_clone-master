@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setFlag, logUser } from "../actions/index";
+import { setFlag,setCartBeforeLogin } from "../actions/index";
 
 function Copyright(props) {
   return (
@@ -32,15 +32,24 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const navigate = useNavigate();
-  const Users = useSelector((state) => state.Users.loginData);
+  const Users = useSelector((state) => state?.Users?.loginData);
   const dispatch = useDispatch();
 
   // const { Data } = React.useContext(AppContext);
   // const { DispatchUserEvent } = React.useContext(AppContext);
+  let admin = { 
+    email: "admin@chicmic.in",
+    password:"chicmic"
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
     // Users = useSelector((state) => state.Users.loginData);
     const data = new FormData(event.currentTarget);
+    if (data.get("email") === admin.email && data.get("password") === admin.password) {
+      console.log("admin");
+      navigate("/Admin");
+      return 
+    }
     console.log("mydata", Users);
     // const mydata = Users;
     let user = Users.find((u) => {
@@ -51,7 +60,15 @@ export default function SignInSide() {
     });
     console.log("in  after if ", user);
     dispatch(setFlag({user}));
-    // dispatch(logUser(res));
+    dispatch(
+      setCartBeforeLogin((user.Cart)
+          ? user.Cart
+          : {
+              items: [],
+              quantity: 0
+            }
+      )
+    );
     navigate("/");
   };
 

@@ -7,9 +7,10 @@ import { combineReducers } from "redux";
 import Users from "./Users";
 import Log from "./logged";
 import Cart from "./Cart";
-
+import Admin from "./Admin";
 const RootReducers = combineReducers({
   //   myCount: counterReducer,
+  Admin:Admin,
   Users: Users,
   Log: Log,
    Cart:Cart
