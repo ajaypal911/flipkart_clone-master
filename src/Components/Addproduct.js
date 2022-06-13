@@ -7,7 +7,8 @@ const AdminAddProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const products = useSelector((state) => state.products);
-    console.log("products length",products)
+  console.log("products length", products);
+  const [pimage, setPimage] = useState("");
     const [newProduct, setNewProduct] = useState({
         // id: products?.length  ? products.length+21 : 21,
         id:Date.now(),
@@ -26,14 +27,28 @@ const AdminAddProduct = () => {
         dispatch(addProduct(newProduct));
         navigate("/Admin");
     }
+   const getBase64 = (file) =>
+     new Promise((resolve, reject) => {
+       const reader = new FileReader();
+       reader.readAsDataURL(file);
+       reader.onload = () => resolve(reader.result);
+       reader.onerror = (error) => reject(error);
+     });
+
+   const handlImageFile = async (e) => {
+     let imageblob = await getBase64(e.target.files[0]);
+     console.log(imageblob);
+     setNewProduct({ ...newProduct, [e.target.name]: imageblob });
+     setPimage(imageblob);
+   };
   return (
     <div className="container col-6">
       <center>
         <h3>Admin Panel - Add Product</h3>
       </center>
       <form onSubmit={handleSubmit}>
-        <div class="mb-3">
-          <label for="title" class="form-label">
+        <div className="mb-3">
+          <label for="title" className="form-label">
             Title
           </label>
           <input
@@ -41,12 +56,12 @@ const AdminAddProduct = () => {
             value={newProduct.title}
             onChange={handleInput}
             name="title"
-            class="form-control"
+            className="form-control"
             id="title"
           />
         </div>
-        <div class="mb-3">
-          <label for="price" class="form-label">
+        <div className="mb-3">
+          <label for="price" className="form-label">
             Price
           </label>
           <input
@@ -54,13 +69,13 @@ const AdminAddProduct = () => {
             value={newProduct.price}
             onChange={handleInput}
             name="price"
-            class="form-control"
+            className="form-control"
             id="price"
           />
         </div>
 
-        <div class="mb-3">
-          <label for="description" class="form-label">
+        <div className="mb-3">
+          <label for="description" className="form-label">
             Description
           </label>
           <input
@@ -68,13 +83,13 @@ const AdminAddProduct = () => {
             value={newProduct.description}
             onChange={handleInput}
             name="description"
-            class="form-control"
+            className="form-control"
             id="description"
           />
         </div>
 
-        <div class="mb-3">
-          <label for="category" class="form-label">
+        <div className="mb-3">
+          <label for="category" className="form-label">
             Category
           </label>
           <input
@@ -82,34 +97,40 @@ const AdminAddProduct = () => {
             value={newProduct.category}
             onChange={handleInput}
             name="category"
-            class="form-control"
+            className="form-control"
             id="description"
           />
         </div>
 
-        <div class="mb-3">
-          <label for="image" class="form-label">
+        <div className="mb-3">
+          <label for="image" className="form-label">
             Image
           </label>
           <input
             type="file"
-            value={newProduct.image}
-            onChange={handleInput}
+            // value={newProduct.image}
+            onChange={handlImageFile}
             name="image"
-            class="form-control"
+            className="form-control"
             id="image"
           />
         </div>
+        <div className="mb-3">
+          <label for="image" className="form-label">
+            Image Preview:
+          </label>
+          {pimage && <img src={pimage} alt="loading" />}
+        </div>
 
-        {/* <div class="mb-3">
-    <label for="rating" class="form-label">Rating</label>
-    <input type="text" value={newProduct.} class="form-control" id="rating" />
+        {/* <div className="mb-3">
+    <label for="rating" className="form-label">Rating</label>
+    <input type="text" value={newProduct.} className="form-control" id="rating" />
   </div> */}
 
-        <button type="submit" class="btn btn-primary mx-5">
+        <button type="submit" className="btn btn-primary mx-5">
           Add Product
         </button>
-        <button class="btn btn-secondary mx-5" onClick={() => navigate("/admin")}>
+        <button className="btn btn-secondary mx-5" onClick={() => navigate("/admin")}>
           Go to Admin
         </button>
       </form>

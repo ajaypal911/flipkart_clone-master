@@ -5,7 +5,8 @@ import { addProduct, deleteProduct, saveAfterEditProduct } from "../actions";
 
 const AdminEditProduct = () => {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [pimage, setPimage] = useState("");
     let products = useSelector((state) => state.Admin.products);
         console.log("products in edit", products);
 
@@ -35,6 +36,20 @@ const AdminEditProduct = () => {
     dispatch(deleteProduct(newProduct.id));
     dispatch(addProduct(newProduct));
     navigate("/Admin");
+  };
+  const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  const handlImageFile = async (e) => {
+    let imageblob = await getBase64(e.target.files[0]);
+    console.log(imageblob);
+    setNewProduct({ ...newProduct, [e.target.name]: imageblob });
+    setPimage(imageblob);
   };
   return (
     <div className="container col-6">
@@ -97,19 +112,25 @@ const AdminEditProduct = () => {
           />
         </div>
 
-        {/* <div class="mb-3">
-          <label for="image" class="form-label">
+        <div className="mb-3">
+          <label for="image" className="form-label">
             Image
           </label>
           <input
             type="file"
-            value={newProduct.image}
-            onChange={handleInput}
+            // value={newProduct.image}
+            onChange={handlImageFile}
             name="image"
-            class="form-control"
+            className="form-control"
             id="image"
           />
-        </div> */}
+        </div>
+        <div className="mb-3">
+          <label for="image" className="form-label">
+            Image Preview:
+          </label>
+          {<img src={newProduct.image} alt="loading" />}
+        </div>
 
         {/* <div class="mb-3">
     <label for="rating" class="form-label">Rating</label>

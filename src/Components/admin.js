@@ -16,6 +16,7 @@ const Admin = () => {
               <td>{d?.title}</td>
               <td>{d?.description}</td>
               <td>{d?.price}</td>
+              <td> <img src={d?.image} alt="error" style={{height:"150px", width:"150px"}}/></td>
                   <td> 
                 <button className='btn btn-primary'
                  onClick={()=> navigate(`/AdminEditProduct/${d.id}`)}
@@ -50,7 +51,7 @@ const Admin = () => {
             <td>Title</td>
             <td>Description</td>
             <td>Price</td>
-            {/* <td>Image</td> */}
+            <td>Image</td>
             <td>Actions</td>
           </thead>
           <tbody>{printdata()}</tbody>
